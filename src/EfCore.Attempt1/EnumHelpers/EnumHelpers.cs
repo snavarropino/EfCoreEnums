@@ -3,48 +3,58 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Attempt1.EnumHelpers
+namespace EfCore.Attempt1.EnumHelpers
 {
-    public class Seeder
+    public static class Seeder
     {
         public static void SeedEnumData<TData, TEnum>(DbSet<TData> items)
             where TData : EnumBase<TEnum>
             where TEnum : struct
         {
-            var etype = typeof(TEnum);
+            var enumType = EnsureEnum<TEnum>();
 
-            if (!etype.IsEnum)
-                throw new Exception($"Type '{etype.AssemblyQualifiedName}' must be enum");
-
-            var ntype = Enum.GetUnderlyingType(etype);
-
-            if (ntype == typeof(long) || ntype == typeof(ulong) || ntype == typeof(uint))
-                throw new Exception();
-
-            foreach (TEnum evalue in Enum.GetValues(etype))
+            foreach (TEnum evalue in Enum.GetValues(enumType))
             {
                 var id = (int)Convert.ChangeType(evalue, typeof(int));
-                if (id <= 0)
-                    throw new Exception("Enum underlying value must be positive");
 
-                if (!items.Any(a => a.Id ==id))
+                if (id <= 0)
+                    throw new Exception("Enum underlying value must start with 1");
+
+                if (!items.Any(a => a.Id == id))
                 {
                     var item = Activator.CreateInstance<TData>();
                     item.Id = id;
-                    item.Name = Enum.GetName(etype, evalue);
+                    item.Name = Enum.GetName(enumType, evalue);
                     item.Description = GetEnumDescription(evalue);
                     items.Add(item);
-                }       
+                }
             }
+        }
+
+        private static Type EnsureEnum<TEnum>()
+        {
+            var type = typeof(TEnum);
+
+            if (!type.IsEnum)
+                throw new Exception($"Type '{type.AssemblyQualifiedName}' must be enum");
+
+            var underlyingType = Enum.GetUnderlyingType(type);
+
+            if (underlyingType != typeof(int))
+                throw new Exception("Enum underlyingType must be int");
+
+            return type;
         }
 
         static string GetEnumDescription<TEnum>(TEnum item)
         {
             Type type = item.GetType();
 
-            var attribute = type.GetField(item.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false).Cast<DescriptionAttribute>().FirstOrDefault();
-            return attribute == null ? string.Empty : attribute.Description;
+            var attribute = type.GetField(item.ToString())
+                .GetCustomAttributes(typeof(DescriptionAttribute), false).Cast<DescriptionAttribute>()
+                .FirstOrDefault();
+
+            return attribute?.Description ?? string.Empty;
         }
     }
-
 }

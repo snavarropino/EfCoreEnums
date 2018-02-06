@@ -1,7 +1,8 @@
 ﻿using System;
+using EfCore.Attempt3;
 using Serilog;
 
-namespace Attempt1
+namespace EfCore.Attempt1
 {
     class Program
     {

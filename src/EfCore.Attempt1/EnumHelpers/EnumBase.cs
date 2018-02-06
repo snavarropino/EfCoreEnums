@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Attempt1.EnumHelpers
+namespace EfCore.Attempt1.EnumHelpers
 {
     public class EnumBase<TEnum> where TEnum : struct
     {

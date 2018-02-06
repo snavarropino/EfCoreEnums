@@ -1,10 +1,10 @@
-﻿using Attempt1.EnumHelpers;
-using Attempt1.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Linq;
+using EfCore.Attempt1.EnumHelpers;
+using EfCore.Attempt1.Model;
 
-namespace Attempt1
+namespace EfCore.Attempt3
 {
     public class Sample
     {
