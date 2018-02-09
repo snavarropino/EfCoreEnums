@@ -167,7 +167,7 @@ Unfortunatelly this is not working due some Ef Core limitations: Entity framewor
 
 ## Attempt 3
 
-In order to fix the prevouos error we have to:
+In order to fix the previous error we have to:
 
 - Instruct Ef core to ignore the property based on enum (RatingId) as we are going to manage it
 - Define a backing field that is not connected to a property
@@ -242,3 +242,71 @@ With this approach everything is working fine: **we can use enums** and everythi
         }
     }
 ```
+However there are still several improvements we can do. In this case, if we look to the created database diagram, we notice thar the foreign key field naming is not so good:
+
+![Database diagram](https://github.com/snavarropino/EfCoreEnums/blob/master/images/DiagramAtempt3.png?raw=true "Database diagram")
+
+In adition, the property we created in our student class has a not very good name: RatingId, it would be great to name it Rating. Let's do it!
+
+## Attempt 3 Improved
+
+In order to improve the point we noticed, let's modify student entity:
+
+We also have to modify our DbContext to instruct Entity Framerork core in the right way:
+
+```c#
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        
+        public RatingEnum Rating //Improved Name
+        {
+            get => (RatingEnum)_ratingId;
+            set => _ratingId = (int)value;
+        }
+
+        private int _ratingId;
+        public Rating RatingCatalogue { get; set; }
+    }
+```
+
+
+```c#
+    public class StudentDbContext: DbContext
+    {
+        public StudentDbContext(DbContextOptions<StudentDbContext> options): base(options)
+        {
+        }
+
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .Ignore(s => s.Rating)      // Ignore enum property
+                .Property<int>("_ratingId") // Define backing field with no property
+                .HasColumnName("RatingId")  // Set proper column name for foreign key
+                .IsRequired();
+
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.RatingCatalogue)
+                .WithMany()
+                .HasForeignKey("_ratingId") // Set foreign key to backing field
+                .IsRequired();
+        }
+    }
+```
+
+With previous changes, our entity naming is much better. In addition, our databse model looks great!
+
+![Database diagram](https://github.com/snavarropino/EfCoreEnums/blob/master/images/DiagramAtempt3_Improved.png?raw=true "Database diagram")
+
+
+Hope this helps!
+
+Sergio
+
+
+

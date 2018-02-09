@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfCore.Attempt3", "EfCore.Attempt3\EfCore.Attempt3.csproj", "{B659A6DF-1D58-4D81-8846-D0CF3072D1D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfCore.Attempt3", "EfCore.Attempt3\EfCore.Attempt3.csproj", "{B659A6DF-1D58-4D81-8846-D0CF3072D1D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfCore.Attempt3_Improved", "EfCore.Attempt3_Improved\EfCore.Attempt3_Improved.csproj", "{9111187C-5503-4A6C-947C-DAA5F2DEFE63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{B659A6DF-1D58-4D81-8846-D0CF3072D1D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B659A6DF-1D58-4D81-8846-D0CF3072D1D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B659A6DF-1D58-4D81-8846-D0CF3072D1D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9111187C-5503-4A6C-947C-DAA5F2DEFE63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9111187C-5503-4A6C-947C-DAA5F2DEFE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9111187C-5503-4A6C-947C-DAA5F2DEFE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9111187C-5503-4A6C-947C-DAA5F2DEFE63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
